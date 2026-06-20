@@ -2,10 +2,20 @@ import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { env } from 'hono/adapter'
 import { zValidator } from '@hono/zod-validator'
+import { cors } from "hono/cors";
 import axios from 'axios'
 import { messageSchema } from './validations/message.schema'
 
 const app = new Hono()
+
+app.use(
+  "*",
+  cors({
+    origin: "http://localhost:5173",
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 app.get('/', (c) => {
   return c.text('Hello World!')
